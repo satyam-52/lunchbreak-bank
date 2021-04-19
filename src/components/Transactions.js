@@ -17,9 +17,10 @@ function Transactions() {
     .collection("transactions")
     .onSnapshot((snapshot) =>
       setState(
-        snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }))
+        snapshot.docs.map((doc) => ({ id: doc.id,  data: doc.data() }))
       )
     )
+    // console.log(`${state[2]?.data.createdAt.toDate().toDateString()} ${state[2].data.createdAt.toDate().toLocaleTimeString('en-US')}`)
   }
 
   return (
@@ -33,6 +34,7 @@ function Transactions() {
               <td>Payer</td>
               <td>Receiver</td>
               <td>Amount</td>
+              <td>Created At</td>
             </tr>
           </thead>
           <tbody>
@@ -42,6 +44,7 @@ function Transactions() {
                 <td>{obj.data.to}</td>
                 <td>{obj.data.from}</td>
                 <td>{obj.data.amount}</td>
+                <td>{`${obj.data.createdAt?.toDate().toDateString() ? obj.data.createdAt?.toDate().toDateString() : "Not"} ${obj.data.createdAt?.toDate().toLocaleTimeString('en-US') ? obj.data.createdAt?.toDate().toLocaleTimeString('en-US') : "Available"}`}</td>
               </tr>
             ))}
           </tbody>

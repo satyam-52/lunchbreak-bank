@@ -23,7 +23,7 @@ export const addUser = ([name, accountNo, balance]) => {
 export const addTransaction = (amount, to, from) => {
   return db
     .collection("transactions")
-    .add({ amount: amount, to: to, from: from });
+    .add({ amount: amount, to: to, from: from, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
 };
 
 export const transact = (id1, balance1, id2, balance2, amount) => {

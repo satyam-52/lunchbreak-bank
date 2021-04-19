@@ -26,17 +26,17 @@ function Transfer() {
         })),
       });
     });
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  
   const handleSubmit = (e) => {
     e.preventDefault();
     let flag1 = false;
     let flag2 = false;
-    let id1, id2 = [0, 0];
+    let id1,
+      id2 = [0, 0];
     for (let i = 0; i < state.accounts.length - 1; i++) {
-      if(state.to === state.from) {
+      if (state.to === state.from) {
         alert("Payer's and Reciever's account numbers cannot be same!");
         setState({ ...state, to: "", from: "", amount: "" });
         break;
@@ -57,11 +57,23 @@ function Transfer() {
     } else if (!flag2) {
       alert("Check Payer's account number!");
     } else {
-      transact(state.accounts[id1].id, state.accounts[id1].data.balance, state.accounts[id2].id, state.accounts[id2].data.balance, state.amount)
+      // Go to firebase
+      if (Number(state.accounts[id1].data.balance) < Number(state.amount)) {
+        alert("Insufficient Balance");
+        setState({ ...state, to: "", from: "", amount: "" });
+      } else {
+        transact(
+          state.accounts[id1].id,
+          state.accounts[id1].data.balance,
+          state.accounts[id2].id,
+          state.accounts[id2].data.balance,
+          state.amount
+        );
+        addTransaction(state.amount, state.to, state.from);
 
-      addTransaction(state.amount, state.to, state.from);
-      setState({ ...state, to: "", from: "", amount: "" });
-      history.replace("/transactions-history");
+        setState({ ...state, to: "", from: "", amount: "" });
+        history.replace("/transactions-history");
+      }
     }
   };
 
